@@ -1,7 +1,7 @@
-# TODO: replace with your GitHub handle or team.
-/base/       @your-github-handle
-/templates/  @your-github-handle
-/tools/      @your-github-handle
-/meta/      @your-github-handle
-/.claude/    @your-github-handle
-/.github/    @your-github-handle
+# Owner of the Magrathea repository.
+/base/       @jcgozar
+/templates/  @jcgozar
+/tools/      @jcgozar
+/meta/      @jcgozar
+/.claude/    @jcgozar
+/.github/    @jcgozar

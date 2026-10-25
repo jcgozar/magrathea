@@ -53,7 +53,7 @@ mkdir acme-platform && cd acme-platform && git init
 
 ```json
 {
-  "upstream": { "source": "https://github.com/<you>/magrathea.git", "ref": "v1.0.0" },
+  "upstream": { "source": "https://github.com/jcgozar/magrathea.git", "ref": "v1.0.0" },
   "remove": []
 }
 ```

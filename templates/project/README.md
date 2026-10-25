@@ -2,7 +2,7 @@
 
 @@description@@
 
-Scaffolded by [Magrathea](https://github.com/TODO/magrathea) @@magrathea_version@@ with the
+Scaffolded by [Magrathea](https://github.com/jcgozar/magrathea) @@magrathea_version@@ with the
 @@stack_title@@ stack.
 
 - [CONTEXT.md](CONTEXT.md): what this project is (write this first)

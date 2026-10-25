@@ -135,12 +135,12 @@ You did not ship a `base/VERSION` in the distribution, so the project records th
 
 **What is the license?**
 None chosen yet. Choose one before publishing. (`templates/project/README.md` also links to a
-`TODO` repository URL.)
+repository URL, now set to the GitHub repo.)
 
 **What is not tested?**
 See [the overview](README.md#what-is-and-is-not-proven): stack builds, Kyverno, CI workflows,
 private-repo fetching, real `tofu` plans, and live Claude Code sessions.
 
 **Where do I report a problem or propose a change?**
-TODO: not decided before publication. Inside a project, `/request-standard` writes the request for
+Open an issue at https://github.com/jcgozar/magrathea/issues (the repository is private for now). Inside a project, `/request-standard` writes the request for
 whoever maintains the base.

@@ -17,7 +17,7 @@ create a project.
 ## 1. Get Magrathea
 
 ```sh
-git clone <your Magrathea URL> magrathea     # TODO: the public URL is not decided yet
+git clone https://github.com/jcgozar/magrathea.git magrathea
 cd magrathea
 make test                                    # optional: needs opa
 ```

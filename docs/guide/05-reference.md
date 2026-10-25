@@ -27,7 +27,7 @@ a domain platform repository has `"type": "domain-platform"` and a `domain` (see
 {
   "source": "...", "ref": "v1.0.0", "commit": "<40 hex>", "version": "1.0.0",
   "tree_hash": "<sha256 of the merged base>",
-  "upstream": { "source": "https://github.com/<you>/magrathea.git", "ref": "v1.0.0", "commit": "<40 hex>" }
+  "upstream": { "source": "https://github.com/jcgozar/magrathea.git", "ref": "v1.0.0", "commit": "<40 hex>" }
 }
 ```
 
