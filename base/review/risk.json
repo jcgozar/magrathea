@@ -1,0 +1,23 @@
+{
+  "high_paths": [
+    "platform/**", "local/**", ".github/**", ".claude/**", "scripts/**",
+    "magrathea.json", "magrathea.lock.json", "AGENTS.md", "CLAUDE.md",
+    "**/Dockerfile", "**/service.yaml", "**/pom.xml", "**/package.json", "**/package-lock.json",
+    "**/build.gradle*", "**/*.tf", "**/*.tfvars",
+    "**/db/migration/**", "**/migrations/**",
+    "docs/adr/**", "docs/trd/**"
+  ],
+  "medium_paths": ["CONTEXT.md", "DESIGN.md", "docs/interfaces/**", "evals/**"],
+  "low_paths": ["**/*.md", "docs/runbooks/**", "specs/**"],
+  "test_paths": ["**/src/test/**", "**/*.test.*", "**/*.spec.*", "**/__tests__/**", "tests/**", "**/test/**"],
+  "sensitive_words": [
+    "authentic", "authoriz", "authn", "authz", "password", "passwd", "secret", "token",
+    "credential", "crypto", "jwt", "oauth", "permission", "privilege", "private key",
+    "private_key", "api_key", "apikey", "csrf", "cors", "sanitiz", "deserializ",
+    "runtime.getruntime", "processbuilder", "eval(", "exec("
+  ],
+  "max_files_low": 8,
+  "max_lines_low": 80,
+  "max_files_medium": 25,
+  "max_lines_medium": 400
+}

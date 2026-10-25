@@ -1,0 +1,20 @@
+# The service contract. Developers edit this file to say what the service is and what it
+# needs. They never write cloud infrastructure code. The platform-engineer persona turns "needs"
+# into infrastructure that meets the standards in .magrathea/standards/.
+# image: replace TODO-registry/... with the reference CI pushes, ghcr.io/<owner>/@@slug@@:<git sha>
+# (pinned tag, never latest; ghcr.io/<OWNER>/* is in the K8S-006 registry allowlist).
+# If the pod sets readOnlyRootFilesystem, mount a writable emptyDir at /tmp (Tomcat and the JVM write there).
+name: @@slug@@
+image: TODO-registry/@@slug@@:0.1.0   # pinned tag, never :latest (K8S-006); CI pushes ghcr.io/<owner>/@@slug@@:<git sha>
+port: 8080
+health:
+  path: /actuator/health
+  liveness: /actuator/health/liveness
+  readiness: /actuator/health/readiness
+resources:
+  requests:
+    cpu: 100m
+    memory: 384Mi
+  limits:
+    memory: 512Mi              # a memory limit is required (K8S-005)
+needs: []                      # e.g. a postgres database; each need must have a standard

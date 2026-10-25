@@ -1,0 +1,51 @@
+# Written by Magrathea @@magrathea_version@@ and not yet run. Check the first run.
+# The base is fetched from the Magrathea repo in magrathea.json. If that repo is private, give
+# this job read access to it (for example a token in the checkout or git config).
+name: ci
+
+on:
+  push:
+  pull_request:
+    # labeled/unlabeled so that adding the mode-migration label re-runs the mode check
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+jobs:
+  magrathea:
+    name: base is intact, agents in sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the Magrathea base at the pinned commit
+        run: python3 scripts/magrathea_sync.py
+      - name: Base matches the lock and local additions are valid
+        run: python3 .magrathea/scripts/magrathea_lock.py verify
+      # DOMAIN-003, untested in CI. The real approval control is CODEOWNERS on magrathea.json plus
+      # branch protection; the label only marks a migration that was reviewed. This step runs on
+      # pull_request only: a direct push to the default branch skips it, so branch protection must
+      # prevent direct pushes.
+      - name: infra_mode, domain and type unchanged unless a reviewed migration (DOMAIN-003)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          APPROVED: ${{ contains(github.event.pull_request.labels.*.name, 'mode-migration') && '--approved' || '' }}
+        run: |
+          git fetch --depth=1 origin "$BASE_REF"
+          git show FETCH_HEAD:magrathea.json > "$RUNNER_TEMP/previous-magrathea.json" || : > "$RUNNER_TEMP/previous-magrathea.json"
+          python3 .magrathea/scripts/magrathea_lock.py mode-change --previous "$RUNNER_TEMP/previous-magrathea.json" $APPROVED
+      - name: Generated agents and commands are in sync
+        run: python3 .magrathea/scripts/sync_agents.py --check
+      - name: Base script tests
+        run: python3 -m unittest discover -s .magrathea/scripts -p 'test_*.py'
+
+  policy:
+    name: policy tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the Magrathea base at the pinned commit
+        run: python3 scripts/magrathea_sync.py
+      - uses: open-policy-agent/setup-opa@v2
+        with:
+          version: latest
+      - name: Rego tests (base and local)
+        run: opa test .magrathea/policy/conftest local/policy

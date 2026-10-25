@@ -1,0 +1,6 @@
+{
+  "domain-platform": {
+    "exclude_personas": ["pm", "architect", "developer", "ux", "qa-eval"],
+    "exclude_commands": ["feature"]
+  }
+}

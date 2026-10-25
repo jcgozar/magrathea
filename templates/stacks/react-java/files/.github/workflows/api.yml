@@ -1,0 +1,23 @@
+# Written by Magrathea and not yet run. Check the first run.
+name: api
+
+on:
+  push:
+    paths: ["app/api/**", ".github/workflows/api.yml"]
+  pull_request:
+    paths: ["app/api/**", ".github/workflows/api.yml"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - run: mvn -B verify

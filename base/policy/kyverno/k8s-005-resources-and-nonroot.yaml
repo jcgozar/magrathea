@@ -1,0 +1,54 @@
+# K8S-005: every container sets CPU and memory requests and a memory limit,
+# and pods run as non-root. Kyverno auto-extends Pod rules to Deployments,
+# StatefulSets, Jobs, etc.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: k8s-005-resources-and-nonroot
+  annotations:
+    standards/rule-id: K8S-005
+    policies.kyverno.io/description: >-
+      Containers must declare requests and a memory limit, and run as non-root.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: require-requests-and-memory-limit
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      exclude:
+        any:
+          - resources:
+              namespaces: [kube-system]
+      validate:
+        message: "K8S-005: every container must set cpu and memory requests and a memory limit."
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  requests:
+                    cpu: "?*"
+                    memory: "?*"
+                  limits:
+                    memory: "?*"
+    - name: require-run-as-non-root
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      exclude:
+        any:
+          - resources:
+              namespaces: [kube-system]
+      validate:
+        message: "K8S-005: pods must set runAsNonRoot: true, on the pod or on every container."
+        anyPattern:
+          - spec:
+              securityContext:
+                runAsNonRoot: true
+          - spec:
+              containers:
+                - securityContext:
+                    runAsNonRoot: true

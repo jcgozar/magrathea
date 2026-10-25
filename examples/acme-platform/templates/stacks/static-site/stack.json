@@ -1,0 +1,6 @@
+{
+  "name": "static-site",
+  "title": "Static site",
+  "summary": "A single HTML page in site/, for projects that need no backend",
+  "tested": "Rendering only, by the example's test"
+}

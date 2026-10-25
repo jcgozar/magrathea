@@ -1,0 +1,6 @@
+{
+  "name": "java-service",
+  "title": "Java microservice (Spring Boot)",
+  "summary": "A single Spring Boot 4 REST microservice on Java 25 (LTS), built with Maven as a container and pushed to ghcr.io by CI",
+  "tested": "Template rendering is tested by make test. A Maven verify and a Docker build/run of the skeleton were done by hand once (manual, not reproducible by make test); CI workflows never run"
+}

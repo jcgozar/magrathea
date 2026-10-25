@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "ask": [
+      "Edit(/local/standards/**)",
+      "Edit(/local/policy/**)",
+      "Edit(/local/personas/**)"
+    ],
+    "deny": [
+      "Edit(/.magrathea/**)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(~/.aws/**)",
+      "Read(~/.ssh/**)"
+    ]
+  }
+}

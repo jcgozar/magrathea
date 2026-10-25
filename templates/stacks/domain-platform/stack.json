@@ -1,0 +1,7 @@
+{
+  "name": "domain-platform",
+  "title": "Domain platform (shared infrastructure)",
+  "summary": "The shared infrastructure of a domain (network, EKS, add-ons) as its own repository with OpenTofu skeletons and published SSM parameters; applied by hand, not ready to apply",
+  "type": "domain-platform",
+  "tested": "Template rendering, the persona and command subset and the mode fields are tested by make test. The OpenTofu has never been run, validated or planned (tofu is not installed in the build environment); every TODO is unresolved"
+}

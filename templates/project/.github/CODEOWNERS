@@ -1,0 +1,12 @@
+# Agents may propose changes here; only a human owner approves them.
+# TODO: replace @@owner@@ with your GitHub handle or team if it is still a placeholder.
+/magrathea.json     @@owner@@
+/magrathea.lock.json @@owner@@
+/scripts/          @@owner@@
+/local/            @@owner@@
+/.claude/          @@owner@@
+/.github/          @@owner@@
+/AGENTS.md         @@owner@@
+/CONTEXT.md        @@owner@@
+/docs/adr/         @@owner@@
+/docs/finops/pricing/ @@owner@@

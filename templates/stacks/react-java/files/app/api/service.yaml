@@ -1,0 +1,15 @@
+# The service contract. Developers edit this file to say what the service is and what it
+# needs. They never write cloud infrastructure code. The platform-engineer persona turns "needs"
+# into infrastructure that meets the standards in .magrathea/standards/.
+name: @@slug@@-api
+image: TODO-registry/@@slug@@-api:0.1.0   # pinned tag, never :latest (K8S-006)
+port: 8080
+health:
+  path: /actuator/health
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    memory: 512Mi              # a memory limit is required (K8S-005)
+needs: []                      # e.g. a postgres database; each need must have a standard

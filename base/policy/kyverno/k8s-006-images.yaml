@@ -1,0 +1,49 @@
+# K8S-006: pinned tags (never `latest`) and approved registries only.
+# TODO: replace the registry placeholders before applying.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: k8s-006-images
+  annotations:
+    standards/rule-id: K8S-006
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: require-pinned-tag
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      validate:
+        message: "K8S-006: images must have an explicit tag or digest, and must not use 'latest'."
+        pattern:
+          spec:
+            containers:
+              - image: "*:* | *@sha256:*"
+    - name: disallow-latest-tag
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      validate:
+        message: "K8S-006: the 'latest' tag is not allowed."
+        pattern:
+          spec:
+            containers:
+              - image: "!*:latest"
+    - name: approved-registries
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      exclude:
+        any:
+          - resources:
+              namespaces: [kube-system]
+      validate:
+        message: "K8S-006: images must come from an approved registry."
+        pattern:
+          spec:
+            containers:
+              - image: "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/* | ghcr.io/<OWNER>/*"

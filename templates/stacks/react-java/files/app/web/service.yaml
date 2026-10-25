@@ -1,0 +1,13 @@
+# The service contract for the web app. See app/api/service.yaml for the fields.
+name: @@slug@@-web
+image: TODO-registry/@@slug@@-web:0.1.0   # pinned tag, never :latest (K8S-006)
+port: 8080
+health:
+  path: /
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 128Mi
+needs: []

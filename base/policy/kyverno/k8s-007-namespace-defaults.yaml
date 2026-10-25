@@ -1,0 +1,53 @@
+# K8S-007: every new namespace gets a default-deny ingress NetworkPolicy and a
+# ResourceQuota. Egress controls are planned, not enforced yet. A blanket egress
+# deny would break DNS, so it needs an allow-DNS companion policy first.
+# Quota numbers are starting values.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: k8s-007-namespace-defaults
+  annotations:
+    standards/rule-id: K8S-007
+spec:
+  rules:
+    - name: default-deny-ingress
+      match:
+        any:
+          - resources:
+              kinds: [Namespace]
+      exclude:
+        any:
+          - resources:
+              names: [kube-system, kube-public, kube-node-lease, kyverno, argocd]
+      generate:
+        apiVersion: networking.k8s.io/v1
+        kind: NetworkPolicy
+        name: default-deny-ingress
+        namespace: "{{request.object.metadata.name}}"
+        synchronize: true
+        data:
+          spec:
+            podSelector: {}
+            policyTypes: [Ingress]
+    - name: default-resource-quota
+      match:
+        any:
+          - resources:
+              kinds: [Namespace]
+      exclude:
+        any:
+          - resources:
+              names: [kube-system, kube-public, kube-node-lease, kyverno, argocd]
+      generate:
+        apiVersion: v1
+        kind: ResourceQuota
+        name: default-quota
+        namespace: "{{request.object.metadata.name}}"
+        synchronize: false
+        data:
+          spec:
+            hard:
+              requests.cpu: "4"
+              requests.memory: 8Gi
+              limits.memory: 16Gi
+              pods: "50"

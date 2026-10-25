@@ -1,0 +1,62 @@
+# SETUP-006. Written by Magrathea and not yet run. Check the first run.
+# Runs the "Quick start" commands of the local-setup README (app/README.md). Without a README the
+# job is skipped with a notice; the reviewer raises that under SETUP-001/SETUP-004.
+#
+# Limits:
+# - All sh/bash code blocks under "## Quick start" are joined, in order, into ONE bash script run
+#   with `set -euo pipefail` from the app directory.
+# - No foreground servers: a command that never exits runs until timeout-minutes and fails the job.
+# - Commands needing secrets, a local .env or a container runtime may fail here; that is a gap in
+#   the README. TODO: confirm Docker/Testcontainers behaviour on the runner.
+name: local-setup
+
+on:
+  pull_request:
+    paths:
+      - "app/README.md"
+      - "app/pom.xml"
+      - "app/Dockerfile"
+      - ".github/workflows/local-setup.yml"
+  push:
+    paths:
+      - "app/README.md"
+      - "app/pom.xml"
+      - "app/Dockerfile"
+      - ".github/workflows/local-setup.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  quick-start:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+      - name: Run the README quick start
+        run: |
+          python3 - "app/README.md" "app" <<'PY'
+          import re, subprocess, sys
+          path, cwd = sys.argv[1], sys.argv[2]
+          try:
+              text = open(path, encoding="utf-8").read()
+          except FileNotFoundError:
+              print("::notice::%s not found; skipping (SETUP-001)" % path)
+              sys.exit(0)
+          m = re.search(r"^## Quick start\s*$(.*?)(?=^## |\Z)", text, re.S | re.M)
+          if not m:
+              print("::error::%s has no '## Quick start' section" % path)
+              sys.exit(1)
+          blocks = re.findall(r"```(?:sh|bash)\n(.*?)```", m.group(1), re.S)
+          if not blocks:
+              print("::error::no sh code block under Quick start in %s" % path)
+              sys.exit(1)
+          script = "set -euo pipefail\n" + "\n".join(blocks)
+          print(script, flush=True)
+          subprocess.run(["bash", "-c", script], check=True, cwd=cwd)
+          PY
