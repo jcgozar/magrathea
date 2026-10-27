@@ -92,3 +92,9 @@ The `magrathea-platform-engineer` maintains `base/`, `templates/` and `tools/`; 
 - The Kyverno policies, the CI workflows and the policies against a real `tofu` plan are
   untested.
 - None of this has run in a live Claude Code session yet.
+
+## License
+
+Apache License 2.0; see [LICENSE](LICENSE). Projects you generate with Magrathea are yours and are
+not bound by this license, apart from any files you keep from `base/` or `templates/`, which stay
+under it.
